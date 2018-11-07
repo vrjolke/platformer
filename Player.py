@@ -16,14 +16,14 @@ class Player(pg.sprite.Sprite):
         self.acceleration = vector(0, 0)
 
     def update(self):
-        self.acceleration = vector(0, 0)
+        self.acceleration = vector(0, 0.5)
         keys = pg.key.get_pressed()
         if keys[pg.K_LEFT]:
             self.acceleration.x = -PLAYER_ACCELERATION
         if keys[pg.K_RIGHT]:
             self.acceleration.x = PLAYER_ACCELERATION
 
-        self.acceleration += self.velocity * PLAYER_FRICTION
+        self.acceleration.x += self.velocity.x * PLAYER_FRICTION
         self.velocity += self.acceleration
         self.position += self.velocity + 0.5 * self.acceleration
         # wrap around the sides of the screen
@@ -32,4 +32,4 @@ class Player(pg.sprite.Sprite):
         if self.position.x < 0:
             self.position.x = WIDTH
 
-        self.rect.center = self.position
+        self.rect.midbottom = self.position
