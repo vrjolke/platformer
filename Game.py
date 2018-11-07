@@ -24,6 +24,9 @@ class Game:
         platform1 = Platform(0, HEIGHT - 20, WIDTH, 20)
         self.all_sprites.add(platform1)
         self.platforms.add(platform1)
+        platform2 = Platform(WIDTH / 2 - 50, HEIGHT * 3 / 4, 100, 20)
+        self.all_sprites.add(platform2)
+        self.platforms.add(platform2)
         self.run()
 
     def run(self):
@@ -46,7 +49,7 @@ class Game:
     def event(self):
         # game loop - events
         for event in pg.event.get():
-        # check for closing the window
+            # check for closing the window
             if event.type == pg.QUIT:
                 if self.playing:
                     self.playing = False
