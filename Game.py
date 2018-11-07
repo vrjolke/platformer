@@ -1,7 +1,8 @@
 import pygame as pg
 import random
 from settings import *
-from sprites import *
+from Player import *
+from Platform import *
 
 
 class Game:
@@ -17,8 +18,12 @@ class Game:
     def new(self):
         # start new game
         self.all_sprites = pg.sprite.Group()
+        self.platforms = pg.sprite.Group()
         self.player = Player()
         self.all_sprites.add(self.player)
+        platform1 = Platform(0, HEIGHT - 20, WIDTH, 20)
+        self.all_sprites.add(platform1)
+        self.platforms.add(platform1)
         self.run()
 
     def run(self):
@@ -33,6 +38,10 @@ class Game:
     def update(self):
         # game loop - update
         self.all_sprites.update()
+        hits = pg.sprite.spritecollide(self.player, self.platforms, False)
+        if hits:
+            self.player.position.y = hits[0].rect.top + 1
+            self.player.velocity.y = 0
     
     def event(self):
         # game loop - events
