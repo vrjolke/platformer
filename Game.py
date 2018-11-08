@@ -46,7 +46,24 @@ class Game:
                 self.player.position.y = collision[0].rect.top + 1
                 self.player.velocity.y = 0
                 self.player.jump()
-    
+        # if player reaches top of the screen
+        if self.player.rect.top <= HEIGHT / 4:
+            self.player.position.y += abs(self.player.velocity.y)
+            for platform in self.platforms:
+                platform.rect.y += abs(self.player.velocity.y) 
+
+                # delete platform if goes off the screen
+                if platform.rect.top >= HEIGHT:
+                    platform.kill()
+        # spawn new platforms
+        while len(self.platforms) < 6:
+            plat_width = random.randrange(50, 100)
+            platform = Platform(random.randrange(0, WIDTH - plat_width),
+                                random.randrange(-30, -20),
+                                plat_width, 15)
+            self.platforms.add(platform)
+            self.all_sprites.add(platform)
+
     def event(self):
         # game loop - events
         for event in pg.event.get():
