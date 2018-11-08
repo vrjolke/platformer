@@ -21,12 +21,10 @@ class Game:
         self.platforms = pg.sprite.Group()
         self.player = Player(self)
         self.all_sprites.add(self.player)
-        platform1 = Platform(0, HEIGHT - 20, WIDTH, 20)
-        self.all_sprites.add(platform1)
-        self.platforms.add(platform1)
-        platform2 = Platform(WIDTH / 2 - 50, HEIGHT * 3 / 4, 100, 20)
-        self.all_sprites.add(platform2)
-        self.platforms.add(platform2)
+        for platform in PLATFORM_LIST:
+            platform_to_add = Platform(*platform)
+            self.all_sprites.add(platform_to_add)
+            self.platforms.add(platform_to_add)
         self.run()
 
     def run(self):
@@ -41,10 +39,13 @@ class Game:
     def update(self):
         # game loop - update
         self.all_sprites.update()
-        hits = pg.sprite.spritecollide(self.player, self.platforms, False)
-        if hits:
-            self.player.position.y = hits[0].rect.top + 1
-            self.player.velocity.y = 0
+        # check collision only when falling downwards
+        if self.player.velocity.y > 0:
+            collision = pg.sprite.spritecollide(self.player, self.platforms, False)
+            if collision:
+                self.player.position.y = collision[0].rect.top + 1
+                self.player.velocity.y = 0
+                self.player.jump()
     
     def event(self):
         # game loop - events
